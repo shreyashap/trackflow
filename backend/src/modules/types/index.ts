@@ -6,6 +6,12 @@ export interface RegisterInput{
 }
 
 
+export interface LoginInput{
+    email : string;
+    password : string
+}
+
+
 export interface RegisterResponse{
     id : string;
     name : string;
