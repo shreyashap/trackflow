@@ -5,6 +5,7 @@ import { RegisterInput ,LoginInput} from "../../types";
 import { registerUser,findUserByEmail} from "../../../shared/repository/auth.repository";
 import { validatePassword,generateToken} from "../../utils"
 import { env} from "../../../config/index"
+import { RoleType } from "../../types";
 
 
 class AuthService {
@@ -44,9 +45,6 @@ class AuthService {
        const refreshTokenExpiry = env.refreshTokenExpiry as string | number;
 
 
-       console.log(`Access token : ${accessTokenExpiry} ${typeof accessTokenExpiry}`)
-
-
        const [accessToken,refreshToken ] = await Promise.all([generateToken(userData,accessTokenSecret,accessTokenExpiry),generateToken(userData,refreshTokenSecret,refreshTokenExpiry)])
     
        if(!accessToken || !refreshToken){
@@ -57,6 +55,23 @@ class AuthService {
        return {userData,accessToken,refreshToken}
 
     }
+
+
+    async refreshAccessToken(user: {id:string,role:RoleType}){
+        const accessTokenSecret = env.accessTokenSecret as string;
+        const accessTokenExpiry = env.accessTokenExpiry as string;
+
+
+        const accessToken = await generateToken(user,accessTokenSecret,accessTokenExpiry);
+
+        if(!accessToken){
+            logger.error('Failed to refresh access token');
+            throw new AppError('Internal server error')
+        }
+
+        return accessToken;
+    }
+
 }
 
 export const authService = new AuthService();

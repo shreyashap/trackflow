@@ -3,8 +3,9 @@ import { AppError } from "../../../shared/errors/app-error";
 import { authService } from "../services/auth.service";
 import { hashPassword } from "../../utils";
 import { asyncHandler } from "../../../shared/utils/async-handler";
-import { RegisterResponse } from "../../types";
+import { RegisterResponse, RoleType } from "../../types";
 import { env } from "../../../config";
+import { CookieOptions } from "express";
 
 class AuthController {
     registerUser = asyncHandler (async (req:Request,res:Response<{data : RegisterResponse,message : string}>) => {
@@ -46,19 +47,49 @@ class AuthController {
         const {userData,accessToken,refreshToken}  = await authService.login({email,password});
 
         const nodeEnv = env.nodeEnv;
-        const options = {
+        const options :CookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: nodeEnv === 'production',
             sameSite: 'strict',
-            path: '/auth/refresh'
+            path : "/auth/refresh/token"
         }
 
 
-        res.status(200).cookie('refreshToken',refreshToken).json({
+        res.status(200).cookie('refreshToken',refreshToken,options).json({
             message : 'User logged in successfully',
             data : userData,
             accessToken
         })
+    })
+
+    logoutUser = asyncHandler(async(req:Request,res:Response)=>{
+        const options :CookieOptions= {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "strict",
+            path : "/auth/refresh/token"
+        }
+
+        res.status(200).clearCookie("refreshToken",options).json({
+            message : "Logout successful"
+        })
+    })
+
+    refreshAccessToken = asyncHandler(async(req:Request,res:Response)=>{
+        
+        const user = {
+            id : req.user?.id,
+            role : req.user?.role
+        }
+
+        const accessToken = await authService.refreshAccessToken(user);
+
+        res.status(200).json({ 
+            message : "Token refreshed successdully",
+            accessToken
+        })
+
+
     })
     
 }

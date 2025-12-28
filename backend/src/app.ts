@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
+
 import { requestLogger } from "./shared/middleware/request-logger.middleware";
 import { errorMiddleware } from "./shared/middleware/error.middleware";
 
@@ -16,6 +18,7 @@ app.use(requestLogger);
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use("/auth",authRouter);
 
 
