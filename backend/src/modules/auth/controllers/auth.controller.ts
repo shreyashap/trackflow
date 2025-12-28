@@ -3,12 +3,14 @@ import { AppError } from "../../../shared/errors/app-error";
 import { authService } from "../services/auth.service";
 import { hashPassword } from "../../utils";
 import { asyncHandler } from "../../../shared/utils/async-handler";
-import { RegisterResponse, RoleType } from "../../types";
+import { RegisterResponse, LoginResponse,RoleType } from "../../types";
 import { env } from "../../../config";
 import { CookieOptions } from "express";
+import { ApiResponse } from "../../../shared/types/api-response";
+
 
 class AuthController {
-    registerUser = asyncHandler (async (req:Request,res:Response<{data : RegisterResponse,message : string}>) => {
+    registerUser = asyncHandler (async (req:Request,res:Response<ApiResponse<RegisterResponse>>) => {
         const {name,email,password} = req.body;
         if(!name || !email || !password){
             throw new AppError('All fields are required',400);
@@ -27,6 +29,7 @@ class AuthController {
         });
 
         res.status(201).json({
+            success : true,
             message:'User registered successfully',
             data:{
                 id:user.id,
@@ -37,7 +40,7 @@ class AuthController {
         });
     })
 
-    loginUser = asyncHandler(async(req:Request,res:Response)=>{
+    loginUser = asyncHandler(async(req:Request,res:Response<ApiResponse<LoginResponse>>)=>{
         const {email,password } = req.body;
 
         if(!email || !password){
@@ -56,9 +59,12 @@ class AuthController {
 
 
         res.status(200).cookie('refreshToken',refreshToken,options).json({
+            success : true,
             message : 'User logged in successfully',
-            data : userData,
-            accessToken
+            data : {
+                user : userData,
+                accessToken
+            }
         })
     })
 
@@ -71,12 +77,12 @@ class AuthController {
         }
 
         res.status(200).clearCookie("refreshToken",options).json({
+            success : true,
             message : "Logout successful"
         })
     })
 
-    refreshAccessToken = asyncHandler(async(req:Request,res:Response)=>{
-        
+    refreshAccessToken = asyncHandler(async(req:Request,res:Response<ApiResponse<Pick<LoginResponse,"accessToken">>>)=>{
         const user = {
             id : req.user?.id,
             role : req.user?.role
@@ -85,13 +91,13 @@ class AuthController {
         const accessToken = await authService.refreshAccessToken(user);
 
         res.status(200).json({ 
-            message : "Token refreshed successdully",
-            accessToken
+            success : true,
+            message : "Token refreshed successfully",
+            data : {
+                accessToken
+            }
         })
-
-
     })
-    
 }
 
 export const authController = new AuthController();

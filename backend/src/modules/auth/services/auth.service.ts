@@ -39,10 +39,10 @@ class AuthService {
        const {password:hashedPassword,isDeleted,...userData} = user;
 
 
-       const accessTokenSecret = env.accessTokenSecret as string;
-       const accessTokenExpiry = env.accessTokenExpiry as string | number;
-       const refreshTokenSecret = env.refreshTokenSecret as string;
-       const refreshTokenExpiry = env.refreshTokenExpiry as string | number;
+       const accessTokenSecret = env.accessTokenSecret;
+       const accessTokenExpiry = env.accessTokenExpiry;
+       const refreshTokenSecret = env.refreshTokenSecret;
+       const refreshTokenExpiry = env.refreshTokenExpiry;
 
 
        const [accessToken,refreshToken ] = await Promise.all([generateToken(userData,accessTokenSecret,accessTokenExpiry),generateToken(userData,refreshTokenSecret,refreshTokenExpiry)])
@@ -56,10 +56,9 @@ class AuthService {
 
     }
 
-
     async refreshAccessToken(user: {id:string,role:RoleType}){
-        const accessTokenSecret = env.accessTokenSecret as string;
-        const accessTokenExpiry = env.accessTokenExpiry as string;
+        const accessTokenSecret = env.accessTokenSecret;
+        const accessTokenExpiry = env.accessTokenExpiry;
 
 
         const accessToken = await generateToken(user,accessTokenSecret,accessTokenExpiry);
