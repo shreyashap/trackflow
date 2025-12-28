@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { Role } from "../../../generated/prisma/enums";
 
 
@@ -6,6 +5,7 @@ export type RoleType = Role;
 declare global{
     namespace Express{ 
         interface Request {
+            id : string;
             user: {
                 id: string;
                 role: RoleType;
@@ -34,4 +34,14 @@ export interface RegisterResponse{
     role : 'USER' | 'ADMIN'
 }
 
-
+export interface LoginResponse{
+    user : {
+        name: string | null;
+        email: string;
+        id: string;
+        role: Role;
+        createdAt: Date;
+        updatedAt: Date;
+    },
+    accessToken : string;
+}
