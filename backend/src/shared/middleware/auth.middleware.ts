@@ -1,4 +1,4 @@
-import jwt,{Jwt, JwtPayload} from "jsonwebtoken";
+import jwt,{ JwtPayload} from "jsonwebtoken";
 import { findUserById } from "../repository/auth.repository";
 import { NextFunction,Request,Response } from "express";
 import { AppError } from "../errors/app-error";
@@ -17,7 +17,7 @@ const decodeToken = (token: string,tokenSecret:string) => {
     return jwt.verify(token, tokenSecret);
   } catch (error) {
     logger.warn("JWT verification failed");
-    throw new AppError("Invalid or expired token", 401);
+    throw new AppError(`Invalid or expired token : ${error}`, 401);
   }
 };
 

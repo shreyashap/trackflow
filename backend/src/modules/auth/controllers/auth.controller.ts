@@ -3,7 +3,7 @@ import { AppError } from "../../../shared/errors/app-error";
 import { authService } from "../services/auth.service";
 import { hashPassword } from "../../utils";
 import { asyncHandler } from "../../../shared/utils/async-handler";
-import { RegisterResponse, LoginResponse,RoleType } from "../../types";
+import { RegisterResponse, LoginResponse } from "../../types";
 import { env } from "../../../config";
 import { CookieOptions } from "express";
 import { ApiResponse } from "../../../shared/types/api-response";

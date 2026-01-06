@@ -36,7 +36,7 @@ class AuthService {
          throw new AppError('Invalid email or password',400)
        }
 
-       const {password:hashedPassword,isDeleted,...userData} = user;
+       const {password:_hashedPassword,isDeleted:_isDeleted,...userData} = user;
 
 
        const accessTokenSecret = env.accessTokenSecret;

@@ -1,5 +1,5 @@
 import bcrypt  from "bcrypt";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { Role } from "../../generated/prisma/enums";
 import { logger } from "../shared/logger/logger";
 import { AppError } from "../shared/errors/app-error";
