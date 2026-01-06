@@ -5,7 +5,7 @@ export default defineConfig({
     setupFiles: ["./src/tests/setup"],
     environment: "node",
     globals: true,
-    maxWorkers : 1
+    maxWorkers: 1,
   },
-  mode :"test",
+  mode: "test",
 });
