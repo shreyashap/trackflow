@@ -43,7 +43,6 @@ class AuthController {
 
   loginUser = asyncHandler(
     async (req: Request, res: Response<ApiResponse<LoginResponse>>) => {
-      const name = "Test";
       const { email, password } = req.body;
 
       if (!email || !password) {
