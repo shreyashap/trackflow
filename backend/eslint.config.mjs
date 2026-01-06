@@ -6,7 +6,7 @@ export default defineConfig(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["dist/", "node_modules/", "build/",".env",".env.test"],
+    ignores: ["dist/", "node_modules/", "build/",".env",".env.test","package.json","package-lock.json"],
   },
   {
     rules: {
