@@ -41,6 +41,7 @@ class AuthController {
     })
 
     loginUser = asyncHandler(async(req:Request,res:Response<ApiResponse<LoginResponse>>)=>{
+        const name = ""
         const {email,password } = req.body;
 
         if(!email || !password){
