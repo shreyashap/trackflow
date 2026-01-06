@@ -1,6 +1,5 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
 import {defineConfig} from "eslint/config";
 
 export default defineConfig(
@@ -13,6 +12,8 @@ export default defineConfig(
     rules: {
       "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
       "no-console": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
+      "no-return-await": "warn",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         { 
@@ -21,7 +22,16 @@ export default defineConfig(
           "ignoreRestSiblings": true
         }
       ],
+      "import/order": [
+        "warn",
+        {
+          "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+          "alphabetize": { "order": "asc", "caseInsensitive": true }
+        }
+      ],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/consistent-type-imports": "warn",
     }
   },
-  eslintConfigPrettier,
 );
