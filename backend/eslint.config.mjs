@@ -1,14 +1,35 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import {defineConfig} from "eslint/config";
+import importPlugin from "eslint-plugin-import";
+import { defineConfig } from "eslint/config";
 
 export default defineConfig(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ["dist/", "node_modules/", "build/",".env",".env.test","package.json","package-lock.json"],
+    // 1. Add eslint.config.mjs to ignores so it doesn't try to type-check itself
+    ignores: [
+      "dist/", 
+      "node_modules/", 
+      "build/", 
+      ".env", 
+      ".env.test", 
+      "package.json", 
+      "package-lock.json",
+      "eslint.config.mjs" 
+    ],
   },
   {
+    plugins: {
+      import: importPlugin
+    },
+    // 2. Add languageOptions to link your TSConfig
+    languageOptions: {
+      parserOptions: {
+        project: true, // Tells tseslint to find the nearest tsconfig.json
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
       "no-console": "warn",
