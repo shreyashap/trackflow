@@ -20,16 +20,6 @@ export default defineConfig(
     ],
   },
   {
-    plugins: {
-      import: importPlugin
-    },
-    // 2. Add languageOptions to link your TSConfig
-    languageOptions: {
-      parserOptions: {
-        project: true, // Tells tseslint to find the nearest tsconfig.json
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
     rules: {
       "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }],
       "no-console": "warn",
@@ -41,14 +31,6 @@ export default defineConfig(
           "varsIgnorePattern": "^_", 
           "argsIgnorePattern": "^_",
           "ignoreRestSiblings": true
-        }
-      ],
-      "import/order": [
-        "warn",
-        {
-          "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-          "newlines-between": "always",
-          "alphabetize": { "order": "asc", "caseInsensitive": true }
         }
       ],
       "@typescript-eslint/no-explicit-any": "warn",
